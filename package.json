@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/syon/js-hatena/issues"
   },
-  "homepage": "https://github.com/syon/js-hatena#readme"
+  "homepage": "https://github.com/syon/js-hatena#readme",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }
