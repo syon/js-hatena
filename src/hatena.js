@@ -11,6 +11,10 @@ class Bookmark {
       url: apiUrl
     });
   }
+
+  static async getEntryTotalCount(pageUrl) {
+    return new Error("Not supported on AJAX. (Request Method: OPTIONS is 405 Method Not Allowed)")
+  }
 }
 
 module.exports = {
