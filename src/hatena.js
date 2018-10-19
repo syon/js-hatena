@@ -1,23 +1,20 @@
-const $ = require("jquery");
+const fetchJsonp = require("fetch-jsonp");
 
-const B = {}
-if (location.protocol === 'https:') {
-  B.apiOrigin = 'https://b.hatena.ne.jp'
-  B.starOrigin = 'https://s.hatena.com'
+const B = {};
+if (location.protocol === "https:") {
+  B.apiOrigin = "https://b.hatena.ne.jp";
+  B.starOrigin = "https://s.hatena.com";
 } else {
-  B.apiOrigin = 'http://api.b.st-hatena.com'
-  B.starOrigin = 'http://s.hatena.com'
+  B.apiOrigin = "http://api.b.st-hatena.com";
+  B.starOrigin = "http://s.hatena.com";
 }
 
 class Bookmark {
   static async getEntryCount(pageUrl) {
-    console.log("hatena.js ---- #getEntryCount");
-    var apiUrl = `http://api.b.st-hatena.com/entry.count?url=${pageUrl}`;
-
-    // $.ajax returns Promise.
-    return $.ajax({
-      dataType: "jsonp", // Needs on development
-      url: apiUrl
+    const apiUrl = `http://api.b.st-hatena.com/entry.count?url=${pageUrl}`;
+    return fetchJsonp(apiUrl).then(r => {
+      if (r.ok) return r.json();
+      return null;
     });
   }
 
@@ -28,9 +25,11 @@ class Bookmark {
 
 class Star {
   static async get(pageUrl) {
-    return $.ajax({
-      dataType: "jsonp", // Needs on development
-      url: `${B.apiOrigin}/entry/jsonlite/?url=${encodeURIComponent(pageUrl)}`,
+    const url = encodeURIComponent(pageUrl);
+    const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
+    return fetchJsonp(apiUrl).then(r => {
+      if (r.ok) return r.json();
+      return null;
     });
   }
 }
