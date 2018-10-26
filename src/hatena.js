@@ -33,6 +33,14 @@ class Bookmark {
 }
 
 class Star {
+  static async getEntry({ userId, yyyymmdd, eid }) {
+    const uri = `http://b.hatena.ne.jp/${userId}/${yyyymmdd}%23bookmark-${eid}`;
+    const apiUrl = `${B.starOrigin}/entry.json?uri=${uri}`;
+    return fetchJsonp(apiUrl).then(r => {
+      if (r.ok) return r.json();
+      return null;
+    });
+  }
 }
 
 module.exports = {
