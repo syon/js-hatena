@@ -11,6 +11,13 @@ if (location.protocol === "https:") {
   B.starImageOrigin = "http://s.st-hatena.com";
 }
 
+class User {
+  static getProfileImageURL(user) {
+    const apiUrl = `https://cdn.profile-image.st-hatena.com/users/${user}/profile.png`;
+    return apiUrl;
+  }
+}
+
 class Bookmark {
   static async getEntryCount(pageUrl) {
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
@@ -52,6 +59,7 @@ class Star {
 }
 
 module.exports = {
+  User,
   Bookmark,
   Star
 };
