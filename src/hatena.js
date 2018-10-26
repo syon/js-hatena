@@ -35,8 +35,8 @@ class Bookmark {
 }
 
 class Star {
-  static async getEntry({ userId, yyyymmdd, eid }) {
-    const uri = `http://b.hatena.ne.jp/${userId}/${yyyymmdd}%23bookmark-${eid}`;
+  static async getEntry({ user, yyyymmdd, eid }) {
+    const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
     const apiUrl = `${B.starOrigin}/entry.json?uri=${uri}`;
     return fetchJsonp(apiUrl).then(r => {
       if (r.ok) return r.json();
@@ -44,8 +44,8 @@ class Star {
     });
   }
 
-  static getEntryCountImageURL({ userId, yyyymmdd, eid }) {
-    const uri = `http://b.hatena.ne.jp/${userId}/${yyyymmdd}%23bookmark-${eid}`;
+  static getEntryCountImageURL({ user, yyyymmdd, eid }) {
+    const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
     const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${uri}`;
     return apiUrl;
   }
