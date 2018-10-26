@@ -11,7 +11,16 @@ if (location.protocol === "https:") {
 
 class Bookmark {
   static async getEntryCount(pageUrl) {
-    const apiUrl = `http://api.b.st-hatena.com/entry.count?url=${pageUrl}`;
+    const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
+    return fetchJsonp(apiUrl).then(r => {
+      if (r.ok) return r.json();
+      return null;
+    });
+  }
+
+  static async getEntryLite(pageUrl) {
+    const url = encodeURIComponent(pageUrl);
+    const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
     return fetchJsonp(apiUrl).then(r => {
       if (r.ok) return r.json();
       return null;
@@ -24,14 +33,6 @@ class Bookmark {
 }
 
 class Star {
-  static async get(pageUrl) {
-    const url = encodeURIComponent(pageUrl);
-    const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
-    return fetchJsonp(apiUrl).then(r => {
-      if (r.ok) return r.json();
-      return null;
-    });
-  }
 }
 
 module.exports = {
