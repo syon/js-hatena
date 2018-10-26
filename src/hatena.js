@@ -4,9 +4,11 @@ const B = {};
 if (location.protocol === "https:") {
   B.apiOrigin = "https://b.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
+  B.starImageOrigin = "https://s.st-hatena.com";
 } else {
   B.apiOrigin = "http://api.b.st-hatena.com";
   B.starOrigin = "http://s.hatena.com";
+  B.starImageOrigin = "http://s.st-hatena.com";
 }
 
 class Bookmark {
@@ -40,6 +42,12 @@ class Star {
       if (r.ok) return r.json();
       return null;
     });
+  }
+
+  static getEntryCountImageURL({ userId, yyyymmdd, eid }) {
+    const uri = `http://b.hatena.ne.jp/${userId}/${yyyymmdd}%23bookmark-${eid}`;
+    const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${uri}`;
+    return apiUrl;
   }
 }
 
