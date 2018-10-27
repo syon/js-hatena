@@ -26,7 +26,7 @@ class Bookmark {
 
   static async getEntryCount(pageUrl) {
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
-    return fetchJsonp(apiUrl).then(r => {
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       return null;
     });
@@ -35,7 +35,7 @@ class Bookmark {
   static async getEntryLite(pageUrl) {
     const url = encodeURIComponent(pageUrl);
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
-    return fetchJsonp(apiUrl).then(r => {
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       return null;
     });
@@ -50,7 +50,7 @@ class Star {
   static async getEntry({ user, yyyymmdd, eid }) {
     const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
     const apiUrl = `${B.starOrigin}/entry.json?uri=${uri}`;
-    return fetchJsonp(apiUrl).then(r => {
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       return null;
     });
