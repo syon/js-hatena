@@ -84,22 +84,18 @@ class Star {
   static makeStars(entry) {
     const stars = {};
     if (entry) {
-      const yellow = Star.mergeStarsBySameUser(entry.stars);
-      if (yellow) {
+      // merge stars by same user (yellow only)
+      const yellow = Array.from(new Set(entry.stars.map(x => x.name))).length;
+      if (yellow > 0) {
         stars.yellow = yellow;
       }
       if (entry.colored_stars) {
         entry.colored_stars.forEach(cs => {
-          stars[cs.color] = Star.mergeStarsBySameUser(cs.stars);
+          stars[cs.color] = cs.stars.length;
         });
       }
     }
     return stars;
-  }
-
-  static mergeStarsBySameUser(stars) {
-    const merged = Array.from(new Set(stars.map(x => x.name)));
-    return merged.length;
   }
 
   static async getStarEntry(eid, bookmark) {
