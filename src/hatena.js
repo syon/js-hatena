@@ -19,6 +19,11 @@ class User {
 }
 
 class Bookmark {
+  static getUserPageURL(user) {
+    const apiUrl = `https://b.hatena.ne.jp/${user}/`;
+    return apiUrl;
+  }
+
   static async getEntryCount(pageUrl) {
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
     return fetchJsonp(apiUrl).then(r => {
