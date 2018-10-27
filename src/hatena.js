@@ -61,6 +61,57 @@ class Star {
     const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${uri}`;
     return apiUrl;
   }
+
+  static async getArrangedStarSetByEntry(entry) {
+    const starEntries = await Promise.all(
+      entry.bookmarks.map(async b => {
+        const se = await Star.getStarEntry(entry.eid, b);
+        se.user = b.user;
+        return se;
+      })
+    );
+    return Star.makeStarSet(starEntries);
+  }
+
+  static makeStarSet(starEntries) {
+    const starSet = {};
+    starEntries.forEach(x => {
+      starSet[x.user] = Star.makeStars(x.entries[0]);
+    });
+    return starSet;
+  }
+
+  static makeStars(entry) {
+    const stars = {};
+    if (entry) {
+      const yellow = Star.mergeStarsBySameUser(entry.stars);
+      if (yellow) {
+        stars.yellow = yellow;
+      }
+      if (entry.colored_stars) {
+        entry.colored_stars.forEach(cs => {
+          stars[cs.color] = Star.mergeStarsBySameUser(cs.stars);
+        });
+      }
+    }
+    return stars;
+  }
+
+  static mergeStarsBySameUser(stars) {
+    const merged = Array.from(new Set(stars.map(x => x.name)));
+    return merged.length;
+  }
+
+  static async getStarEntry(eid, bookmark) {
+    const ymd = bookmark.timestamp.match(/^(20..\/..\/..)/)[1];
+    const yyyymmdd = ymd.replace(/\//g, "");
+    const star = await Star.getEntry({
+      user: bookmark.user,
+      yyyymmdd,
+      eid
+    });
+    return star;
+  }
 }
 
 module.exports = {
