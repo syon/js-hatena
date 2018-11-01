@@ -63,8 +63,9 @@ class Star {
   }
 
   static async getArrangedStarSetByEntry(entry) {
+    const commentedOnly = entry.bookmarks.filter(x => x.comment)
     const starEntries = await Promise.all(
-      entry.bookmarks.map(async b => {
+      commentedOnly.map(async b => {
         const se = await Star.getStarEntry(entry.eid, b);
         se.user = b.user;
         return se;
