@@ -35,10 +35,11 @@ class Bookmark {
   static async getEntryLite(pageUrl) {
     const url = encodeURIComponent(pageUrl);
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
+    const result = await fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
     });
+    return result || {};
   }
 
   static async getEntryTotalCount(pageUrl) {
@@ -63,6 +64,7 @@ class Star {
   }
 
   static async getArrangedStarSetByEntry(entry) {
+    if (!entry || !entry.bookmarks) return {}
     const commentedOnly = entry.bookmarks.filter(x => x.comment);
     const starEntries = await Promise.all(
       commentedOnly.map(async b => {
