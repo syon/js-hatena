@@ -28,7 +28,7 @@ class Bookmark {
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
-      return null;
+      throw new Error(r);
     });
   }
 
@@ -37,12 +37,12 @@ class Bookmark {
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
-      return null;
+      throw new Error(r);
     });
   }
 
   static async getEntryTotalCount(pageUrl) {
-    return new Error("Not works because of 'CORB'.");
+    throw new Error("Not works because of 'CORB'.");
   }
 }
 
@@ -52,7 +52,7 @@ class Star {
     const apiUrl = `${B.starOrigin}/entry.json?uri=${uri}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
-      return null;
+      throw new Error(r);
     });
   }
 
@@ -63,7 +63,7 @@ class Star {
   }
 
   static async getArrangedStarSetByEntry(entry) {
-    const commentedOnly = entry.bookmarks.filter(x => x.comment)
+    const commentedOnly = entry.bookmarks.filter(x => x.comment);
     const starEntries = await Promise.all(
       commentedOnly.map(async b => {
         const se = await Star.getStarEntry(entry.eid, b);
