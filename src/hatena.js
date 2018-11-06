@@ -24,7 +24,8 @@ class Bookmark {
     return apiUrl;
   }
 
-  static async getEntryCount(pageUrl) {
+  static async getEntryCount(rawPageUrl) {
+    const pageUrl = tweakPageUrl(rawPageUrl);
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
@@ -32,7 +33,8 @@ class Bookmark {
     });
   }
 
-  static async getEntryLite(pageUrl) {
+  static async getEntryLite(rawPageUrl) {
+    const pageUrl = tweakPageUrl(rawPageUrl);
     const url = encodeURIComponent(pageUrl);
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
     const result = await fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
@@ -42,7 +44,16 @@ class Bookmark {
     return result || {};
   }
 
-  static async getEntryTotalCount(pageUrl) {
+  static tweakPageUrl(rawPageUrl) {
+    const host = new url.URL(rawPageUrl).host;
+    // Twitter
+    if (host === "twitter.com") {
+      return rawPageUrl.replace(/^https:/, "http:");
+    }
+    return rawPageUrl;
+  }
+
+  static async getEntryTotalCount(rawPageUrl) {
     throw new Error("Not works because of 'CORB'.");
   }
 }
@@ -64,7 +75,7 @@ class Star {
   }
 
   static async getArrangedStarSetByEntry(entry) {
-    if (!entry || !entry.bookmarks) return {}
+    if (!entry || !entry.bookmarks) return {};
     const commentedOnly = entry.bookmarks.filter(x => x.comment);
     const starEntries = await Promise.all(
       commentedOnly.map(async b => {
