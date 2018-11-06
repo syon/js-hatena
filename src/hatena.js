@@ -25,7 +25,7 @@ class Bookmark {
   }
 
   static async getEntryCount(rawPageUrl) {
-    const pageUrl = tweakPageUrl(rawPageUrl);
+    const pageUrl = Bookmark.tweakPageUrl(rawPageUrl);
     const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
@@ -34,7 +34,7 @@ class Bookmark {
   }
 
   static async getEntryLite(rawPageUrl) {
-    const pageUrl = tweakPageUrl(rawPageUrl);
+    const pageUrl = Bookmark.tweakPageUrl(rawPageUrl);
     const url = encodeURIComponent(pageUrl);
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
     const result = await fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
