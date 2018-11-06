@@ -1,4 +1,5 @@
 const fetchJsonp = require("fetch-jsonp");
+const { parseURL } = require("whatwg-url");
 
 const B = {};
 if (location.protocol === "https:") {
@@ -45,7 +46,7 @@ class Bookmark {
   }
 
   static tweakPageUrl(rawPageUrl) {
-    const host = window.location.host;
+    const { host } = parseURL(rawPageUrl);
     // Twitter
     if (host === "twitter.com") {
       return rawPageUrl.replace(/^https:/, "http:");
