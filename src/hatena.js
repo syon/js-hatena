@@ -45,7 +45,7 @@ class Bookmark {
   }
 
   static tweakPageUrl(rawPageUrl) {
-    const host = new url.URL(rawPageUrl).host;
+    const host = window.location.host;
     // Twitter
     if (host === "twitter.com") {
       return rawPageUrl.replace(/^https:/, "http:");
