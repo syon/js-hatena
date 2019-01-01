@@ -2,7 +2,7 @@ const fetchJsonp = require("fetch-jsonp");
 const { parseURL } = require("whatwg-url");
 
 const B = {};
-if (location.protocol === "https:") {
+if (window.location.protocol === "https:") {
   B.apiOrigin = "https://b.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
   B.starImageOrigin = "https://s.st-hatena.com";
@@ -54,7 +54,7 @@ class Bookmark {
     return rawPageUrl;
   }
 
-  static async getEntryTotalCount(rawPageUrl) {
+  static async getEntryTotalCount() {
     throw new Error("Not works because of 'CORB'.");
   }
 }
