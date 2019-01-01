@@ -9,7 +9,8 @@ module.exports = {
     ecmaVersion: 2018
   },
   extends: [
-    "plugin:prettier/recommended"
+    "airbnb-base",
+    "plugin:prettier/recommended",
   ],
   plugins: [
     "prettier"
@@ -18,6 +19,5 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
-    //  'vue/max-attributes-per-line': 'off'
   }
 };
