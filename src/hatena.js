@@ -123,6 +123,29 @@ class Star {
     });
     return star;
   }
+
+  static async getEntries(rawPageUrl) {
+    const uri = encodeURIComponent(rawPageUrl);
+    const apiUrl = `http://s.hatena.ne.jp/entries.json?uri=${uri}`;
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
+      if (r.ok) return r.json();
+      throw new Error(r);
+    });
+  }
+
+  static async getRKS(rawPageUrl) {
+    const res = await Star.getEntries(rawPageUrl);
+    return res.rks;
+  }
+
+  static async addStar(rawPageUrl, rks) {
+    const uri = encodeURIComponent(rawPageUrl);
+    const apiUrl = `http://s.hatena.ne.jp/star.add.json?uri=${uri}&rks=${rks}`;
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
+      if (r.ok) return r.json();
+      throw new Error(r);
+    });
+  }
 }
 
 module.exports = {
