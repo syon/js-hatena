@@ -138,8 +138,9 @@ class Star {
     return res.rks;
   }
 
-  static async addStar(rawPageUrl, rks) {
+  static async addStar(rawPageUrl) {
     const uri = encodeURIComponent(rawPageUrl);
+    const rks = await Star.getRKS(rawPageUrl);
     const apiUrl = `http://s.hatena.ne.jp/star.add.json?uri=${uri}&rks=${rks}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
