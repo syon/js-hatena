@@ -5,10 +5,12 @@ const B = {};
 if (window.location.protocol === "https:") {
   B.apiOrigin = "https://b.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
+  B.starAddOrigin = "https://s.hatena.ne.jp";
   B.starImageOrigin = "https://s.st-hatena.com";
 } else {
   B.apiOrigin = "http://api.b.st-hatena.com";
   B.starOrigin = "http://s.hatena.com";
+  B.starAddOrigin = "http://s.hatena.ne.jp";
   B.starImageOrigin = "http://s.st-hatena.com";
 }
 
@@ -141,7 +143,7 @@ class Star {
   static async addStar(rawPageUrl) {
     const uri = encodeURIComponent(rawPageUrl);
     const rks = await Star.getRKS(rawPageUrl);
-    const apiUrl = `http://s.hatena.ne.jp/star.add.json?uri=${uri}&rks=${rks}`;
+    const apiUrl = `${B.starAddOrigin}/star.add.json?uri=${uri}&rks=${rks}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
