@@ -128,7 +128,7 @@ class Star {
 
   static async getEntries(rawPageUrl) {
     const uri = encodeURIComponent(rawPageUrl);
-    const apiUrl = `http://s.hatena.ne.jp/entries.json?uri=${uri}`;
+    const apiUrl = `${B.starAddOrigin}/entries.json?uri=${uri}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
