@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vue serve"
   },
   "dependencies": {
     "js-hatena": "github:syon/js-hatena"
