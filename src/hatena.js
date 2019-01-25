@@ -1,8 +1,11 @@
 const fetchJsonp = require("fetch-jsonp");
 const { parseURL } = require("whatwg-url");
 
+const isServer = !process.client
+const isDev = !isServer && window.location.protocol === "http:"
+
 const B = {};
-if (window.location.protocol === "https:") {
+if (isServer || !isDev) {
   B.apiOrigin = "https://b.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
   B.starAddOrigin = "https://s.hatena.ne.jp";
