@@ -74,6 +74,14 @@ class Star {
     });
   }
 
+  static getTotalCount({ uri }) {
+    const apiUrl = `${B.starAddOrigin}/blog.json?uri=${uri}`;
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
+      if (r.ok) return r.json();
+      throw new Error(r);
+    });
+  }
+
   static getEntryCountImageURL({ user, yyyymmdd, eid }) {
     const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
     const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${uri}`;
