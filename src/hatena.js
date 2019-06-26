@@ -7,11 +7,13 @@ const isDev = !isServer && window.location.protocol === "http:"
 const B = {};
 if (isServer || !isDev) {
   B.apiOrigin = "https://b.hatena.ne.jp";
+  B.profileOrigin = "https://profile.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
   B.starAddOrigin = "https://s.hatena.ne.jp";
   B.starImageOrigin = "https://s.st-hatena.com";
 } else {
   B.apiOrigin = "http://api.b.st-hatena.com";
+  B.profileOrigin = "http://profile.hatena.ne.jp";
   B.starOrigin = "http://s.hatena.com";
   B.starAddOrigin = "http://s.hatena.ne.jp";
   B.starImageOrigin = "http://s.st-hatena.com";
@@ -21,6 +23,14 @@ class User {
   static getProfileImageURL(user) {
     const apiUrl = `https://cdn.profile-image.st-hatena.com/users/${user}/profile.png`;
     return apiUrl;
+  }
+
+  static getFavorites(user) {
+    const apiUrl = `${B.profileOrigin}/${user}/favorites.json`;
+    return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
+      if (r.ok) return r.json();
+      throw new Error(r);
+    });
   }
 }
 
