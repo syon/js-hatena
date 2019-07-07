@@ -76,8 +76,9 @@ class Bookmark {
 
 class Star {
   static async getEntry({ user, yyyymmdd, eid }) {
-    const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
-    const apiUrl = `${B.starOrigin}/entry.json?uri=${uri}`;
+    const uri = `https://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
+    const encodedUri = Util.encodeURI(uri)
+    const apiUrl = `${B.starOrigin}/entry.json?uri=${encodedUri}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
@@ -85,7 +86,8 @@ class Star {
   }
 
   static getTotalCount({ uri }) {
-    const apiUrl = `${B.starAddOrigin}/blog.json?uri=${uri}`;
+    const encodedUri = Util.encodeURI(uri)
+    const apiUrl = `${B.starAddOrigin}/blog.json?uri=${encodedUri}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
@@ -93,8 +95,9 @@ class Star {
   }
 
   static getEntryCountImageURL({ user, yyyymmdd, eid }) {
-    const uri = `http://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
-    const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${uri}`;
+    const uri = `https://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`;
+    const encodedUri = Util.encodeURI(uri)
+    const apiUrl = `${B.starImageOrigin}/entry.count.image?uri=${encodedUri}`;
     return apiUrl;
   }
 
@@ -148,8 +151,8 @@ class Star {
   }
 
   static async getEntries(rawPageUrl) {
-    const uri = encodeURIComponent(rawPageUrl);
-    const apiUrl = `${B.starAddOrigin}/entries.json?uri=${uri}`;
+    const encodedUri = Util.encodeURI(rawPageUrl);
+    const apiUrl = `${B.starAddOrigin}/entries.json?uri=${encodedUri}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
@@ -162,13 +165,33 @@ class Star {
   }
 
   static async addStar(rawPageUrl) {
-    const uri = encodeURIComponent(rawPageUrl);
+    const encodedUri = Util.encodeURI(rawPageUrl);
     const rks = await Star.getRKS(rawPageUrl);
-    const apiUrl = `${B.starAddOrigin}/star.add.json?uri=${uri}&rks=${rks}`;
+    const apiUrl = `${B.starAddOrigin}/star.add.json?uri=${encodedUri}&rks=${rks}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
     });
+  }
+}
+
+class Util {
+  static encodeURI(uri) {
+    // decode the passed uri recursively.
+    const decodedUri = Util.fullyDecodeURI(uri)
+    return encodeURIComponent(decodedUri)
+  }
+
+  static isEncoded(uri) {
+    uri = uri || ''
+    return uri !== decodeURIComponent(uri)
+  }
+
+  static fullyDecodeURI(uri) {
+    while (Util.isEncoded(uri)) {
+      uri = decodeURIComponent(uri)
+    }
+    return uri
   }
 }
 
