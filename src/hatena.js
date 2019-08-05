@@ -41,8 +41,7 @@ class Bookmark {
   }
 
   static async getEntryCount(rawPageUrl) {
-    const pageUrl = Bookmark.tweakPageUrl(rawPageUrl);
-    const apiUrl = `${B.apiOrigin}/entry.count?url=${pageUrl}`;
+    const apiUrl = `${B.apiOrigin}/entry.count?url=${rawPageUrl}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
@@ -50,23 +49,13 @@ class Bookmark {
   }
 
   static async getEntryLite(rawPageUrl) {
-    const pageUrl = Bookmark.tweakPageUrl(rawPageUrl);
-    const url = encodeURIComponent(pageUrl);
+    const url = encodeURIComponent(rawPageUrl);
     const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
     const result = await fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
     });
     return result || {};
-  }
-
-  static tweakPageUrl(rawPageUrl) {
-    const { host } = parseURL(rawPageUrl);
-    // Twitter
-    if (host === "twitter.com") {
-      return rawPageUrl.replace(/^https:/, "http:");
-    }
-    return rawPageUrl;
   }
 
   static async getEntryTotalCount() {
