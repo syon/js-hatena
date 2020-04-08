@@ -4,6 +4,7 @@ const { parseURL } = require("whatwg-url");
 const isServer = !process.client
 const isDev = !isServer && window.location.protocol === "http:"
 
+// https://bookmark.hatenastaff.com/entry/2019/08/26/111011
 const B = {};
 if (isServer || !isDev) {
   B.apiOrigin = "https://b.hatena.ne.jp";
@@ -12,7 +13,7 @@ if (isServer || !isDev) {
   B.starAddOrigin = "https://s.hatena.ne.jp";
   B.starImageOrigin = "https://s.st-hatena.com";
 } else {
-  B.apiOrigin = "http://api.b.st-hatena.com";
+  B.apiOrigin = "https://bookmark.hatenaapis.com";
   B.profileOrigin = "http://profile.hatena.ne.jp";
   B.starOrigin = "http://s.hatena.com";
   B.starAddOrigin = "http://s.hatena.ne.jp";
