@@ -7,13 +7,15 @@ const isDev = !isServer && window.location.protocol === "http:"
 // https://bookmark.hatenastaff.com/entry/2019/08/26/111011
 const B = {};
 if (isServer || !isDev) {
-  B.apiOrigin = "https://b.hatena.ne.jp";
+  B.countOrigin = "https://bookmark.hatenaapis.com";
+  B.entryOrigin = "https://b.hatena.ne.jp";
   B.profileOrigin = "https://profile.hatena.ne.jp";
   B.starOrigin = "https://s.hatena.com";
   B.starAddOrigin = "https://s.hatena.ne.jp";
   B.starImageOrigin = "https://s.st-hatena.com";
 } else {
-  B.apiOrigin = "https://bookmark.hatenaapis.com";
+  B.countOrigin = "https://bookmark.hatenaapis.com";
+  B.entryOrigin = "https://b.hatena.ne.jp";
   B.profileOrigin = "http://profile.hatena.ne.jp";
   B.starOrigin = "http://s.hatena.com";
   B.starAddOrigin = "http://s.hatena.ne.jp";
@@ -42,7 +44,7 @@ class Bookmark {
   }
 
   static async getEntryCount(rawPageUrl) {
-    const apiUrl = `${B.apiOrigin}/entry.count?url=${rawPageUrl}`;
+    const apiUrl = `${B.countOrigin}/count/entry?url=${rawPageUrl}`;
     return fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
@@ -51,7 +53,7 @@ class Bookmark {
 
   static async getEntryLite(rawPageUrl) {
     const url = encodeURIComponent(rawPageUrl);
-    const apiUrl = `${B.apiOrigin}/entry/jsonlite/?url=${url}`;
+    const apiUrl = `${B.entryOrigin}/entry/jsonlite/?url=${url}`;
     const result = await fetchJsonp(apiUrl, { timeout: 30000 }).then(r => {
       if (r.ok) return r.json();
       throw new Error(r);
