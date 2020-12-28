@@ -72,18 +72,18 @@ class Bookmark {
       },
       timeout: 30000,
     }
-    return axios(apiUrl, config).then((res) => res.data)
+    return axios.get(apiUrl, config).then((res) => res.data)
   }
 
   static async getEntryLite(rawPageUrl) {
     const apiUrl = `${B.countOrigin}/bookmark/getEntryLite`
     const config = {
       params: {
-        url: encodeURIComponent(rawPageUrl),
+        url: rawPageUrl,
       },
       timeout: 30000,
     }
-    return axios(apiUrl, config).then((res) => res.data)
+    return axios.get(apiUrl, config).then((res) => res.data)
   }
 
   static async getEntryTotalCount() {
