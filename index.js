@@ -1,1 +1,1 @@
-module.exports = require("./src/hatena");
+module.exports = require('./src/hatena')
