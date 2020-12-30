@@ -76,7 +76,7 @@ class Bookmark {
   }
 
   static async getEntryLite(rawPageUrl) {
-    const apiUrl = `${B.countOrigin}/bookmark/getEntryLite`
+    const apiUrl = `${B.entryOrigin}/bookmark/getEntryLite`
     const config = {
       params: {
         url: rawPageUrl,
