@@ -1,6 +1,3 @@
-const fetchJsonp = require('fetch-jsonp')
-const axios = require('axios')
-
 const isServer = !process.client
 const isDev = !isServer && window.location.protocol === 'http:'
 
@@ -51,10 +48,9 @@ class User {
 
   static getFavorites(user) {
     const apiUrl = `${B.profileOrigin}/${user}/favorites.json`
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then((r) => {
-      if (r.ok) return r.json()
-      throw new Error(r)
-    })
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 }
 
@@ -65,25 +61,17 @@ class Bookmark {
   }
 
   static async getEntryCount(rawPageUrl) {
-    const apiUrl = `${B.countOrigin}/bookmark/getEntryCount`
-    const config = {
-      params: {
-        url: rawPageUrl,
-      },
-      timeout: 30000,
-    }
-    return axios.get(apiUrl, config).then((res) => res.data)
+    const apiUrl = `https://hatena.now.sh/api/bookmark/getEntryCount?url=${rawPageUrl}`
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 
   static async getEntryLite(rawPageUrl) {
-    const apiUrl = `${B.entryOrigin}/bookmark/getEntryLite`
-    const config = {
-      params: {
-        url: rawPageUrl,
-      },
-      timeout: 30000,
-    }
-    return axios.get(apiUrl, config).then((res) => res.data)
+    const apiUrl = `https://hatena.now.sh/api/bookmark/getEntryLite?url=${rawPageUrl}`
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 
   static async getEntryTotalCount() {
@@ -96,19 +84,17 @@ class Star {
     const uri = `https://b.hatena.ne.jp/${user}/${yyyymmdd}%23bookmark-${eid}`
     const encodedUri = Util.encodeURI(uri)
     const apiUrl = `${B.starOrigin}/entry.json?uri=${encodedUri}`
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then((r) => {
-      if (r.ok) return r.json()
-      throw new Error(r)
-    })
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 
   static getTotalCount({ uri }) {
     const encodedUri = Util.encodeURI(uri)
     const apiUrl = `${B.starAddOrigin}/blog.json?uri=${encodedUri}`
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then((r) => {
-      if (r.ok) return r.json()
-      throw new Error(r)
-    })
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 
   static getEntryCountImageURL({ user, yyyymmdd, eid }) {
@@ -170,10 +156,9 @@ class Star {
   static async getEntries(rawPageUrl) {
     const encodedUri = Util.encodeURI(rawPageUrl)
     const apiUrl = `${B.starAddOrigin}/entries.json?uri=${encodedUri}`
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then((r) => {
-      if (r.ok) return r.json()
-      throw new Error(r)
-    })
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 
   static async getRKS(rawPageUrl) {
@@ -185,10 +170,9 @@ class Star {
     const encodedUri = Util.encodeURI(rawPageUrl)
     const rks = await Star.getRKS(rawPageUrl)
     const apiUrl = `${B.starAddOrigin}/star.add.json?uri=${encodedUri}&rks=${rks}`
-    return fetchJsonp(apiUrl, { timeout: 30000 }).then((r) => {
-      if (r.ok) return r.json()
-      throw new Error(r)
-    })
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
   }
 }
 
