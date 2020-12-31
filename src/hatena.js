@@ -109,13 +109,12 @@ class Star {
   static async getArrangedStarSetByEntry(entry) {
     if (!entry || !entry.bookmarks) return {}
     const commentedOnly = entry.bookmarks.filter((x) => x.comment)
-    const starEntries = await Promise.all(
-      commentedOnly.map(async (b) => {
-        const se = await Star.getStarEntry(entry.eid, b)
-        se.user = b.user
-        return se
-      })
-    )
+    const fn = async (b) => {
+      const se = await Star.getStarEntry(entry.eid, b)
+      se.user = b.user
+      return se
+    }
+    const starEntries = await Promise.map(commentedOnly, fn, { concurrency: 5 })
     return Star.makeStarSet(starEntries)
   }
 
