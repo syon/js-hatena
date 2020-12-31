@@ -2,6 +2,7 @@
   "name": "js-hatena",
   "version": "0.0.1",
   "description": "",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack"
   },
