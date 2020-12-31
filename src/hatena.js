@@ -35,8 +35,8 @@ class Util {
 
   static fullyDecodeURI(uri) {
     let u = uri
-    while (Util.isEncoded(uri)) {
-      u = decodeURIComponent(uri)
+    while (Util.isEncoded(u)) {
+      u = decodeURIComponent(u)
     }
     return u
   }
