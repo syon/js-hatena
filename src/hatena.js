@@ -76,6 +76,13 @@ class Bookmark {
       .catch((e) => ({ error: e.toString() }))
   }
 
+  static async getEntryWithStar(rawPageUrl) {
+    const apiUrl = `https://hatena.now.sh/api/bookmark/getEntryWithStar?url=${rawPageUrl}`
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .catch((e) => ({ error: e.toString() }))
+  }
+
   static async getEntryTotalCount() {
     throw new Error("Not works because of 'CORB'.")
   }
