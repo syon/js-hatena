@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+const Promise = require('bluebird')
 
 const isServer = !process.client
 const isDev = !isServer && window.location.protocol === 'http:'
@@ -20,8 +20,6 @@ if (isServer || !isDev) {
   B.starAddOrigin = 'http://s.hatena.ne.jp'
   B.starImageOrigin = 'http://s.st-hatena.com'
 }
-
-console.log('★★★ Hatena bluebird Promise.map', Promise.map)
 
 class Util {
   static encodeURI(uri) {
@@ -111,12 +109,13 @@ class Star {
   static async getArrangedStarSetByEntry(entry) {
     if (!entry || !entry.bookmarks) return {}
     const commentedOnly = entry.bookmarks.filter((x) => x.comment)
-    const fn = async (b) => {
-      const se = await Star.getStarEntry(entry.eid, b)
-      se.user = b.user
-      return se
-    }
-    const starEntries = Promise.map(commentedOnly, fn, { concurrency: 3 })
+    const starEntries = await Promise.all(
+      commentedOnly.map(async (b) => {
+        const se = await Star.getStarEntry(entry.eid, b)
+        se.user = b.user
+        return se
+      })
+    )
     return Star.makeStarSet(starEntries)
   }
 
@@ -179,7 +178,7 @@ class Star {
   }
 }
 
-export default {
+module.exports = {
   User,
   Bookmark,
   Star,
