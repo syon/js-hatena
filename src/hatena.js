@@ -1,4 +1,4 @@
-const Promise = require('bluebird')
+import Promise from 'bluebird'
 
 const isServer = !process.client
 const isDev = !isServer && window.location.protocol === 'http:'
@@ -179,7 +179,7 @@ class Star {
   }
 }
 
-module.exports = {
+export default {
   User,
   Bookmark,
   Star,
